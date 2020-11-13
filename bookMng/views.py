@@ -7,6 +7,12 @@ from .models import MainMenu
 from .models import Book, RequestBook
 from .forms import RequestBookForm
 
+# send_mail used for messaging capabilities.
+from django.core.mail import send_mail
+
+# Use User auth table for username info
+from django.contrib.auth.models import User
+
 
 # Create your views here.
 def index(request):
@@ -72,3 +78,29 @@ def signup(request):
     return render(request, 'registration/signup.html', {
             'form': form
     })
+
+
+# Contact function used to send message.
+def contact(request):
+    if request.method == "POST":
+        # Fields to be collected for message
+        post_username = request.POST['post-username']
+        message_book = request.POST['message-book']
+        message_name = request.POST['message-name']
+        message_email = request.POST['message-email']
+        message = request.POST['message']
+
+        # Obtain email of post user from auth table
+        user = User.objects.get(username=post_username)
+        user_email = user.email
+
+        # Send email
+        send_mail(
+            'Re: ' + message_book + ', Message from ' + message_name,
+            message,
+            message_email,
+            [user_email],
+            )
+        return render(request, 'bookMng/book_detail.html', {'message_name': message_name})
+    else:
+        return render(request, 'bookMng/book_detail.html', {})

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Requested Books
+{% endblock title %}
+
+{% block content %}
+<h2 align="center">Requested Book Page</h2>
+<table align="center" border="2" width="500">
+    {% for rb in requestedbooks %}
+    <tr>
+        {{rb.bookName}}
+    </tr>
+    {% endfor %}
+</table>
+{% endblock content %}

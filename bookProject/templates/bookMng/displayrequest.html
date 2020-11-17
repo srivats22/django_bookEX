@@ -40,10 +40,13 @@
   </div>
 </nav>
 <h2 align="center">Requested Book Page</h2>
+<table align="center" border="2" width="500">
+    {% for rb in requestedbooks %}
 <h3 align="center">Can't find a book? <a href="#">request it here</a> </h3>
 <table class="table" style="padding: 10px">
   <thead>
     <tr>
+        {{rb.bookName}}
       <th scope="col">Name</th>
       <th scope="col">Requested Book Name</th>
       <th scope="col">Contact Email</th>

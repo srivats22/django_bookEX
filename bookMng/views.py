@@ -1,17 +1,15 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
-from django.views.generic.edit import CreateView
-from django.contrib.auth.forms import UserCreationForm
-from django.urls import reverse_lazy
 from .models import MainMenu
 from .models import Book, RequestBook
 from .forms import RequestBookForm
+from .forms import BookForm
 
-# send_mail used for messaging capabilities.
-from django.core.mail import send_mail
+from django.urls import reverse_lazy
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
+from django.views.generic.edit import CreateView
 
-# Use User auth table for username info
-from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -26,13 +24,54 @@ def home(request):
     return render(request, 'home.html')
 
 
+@login_required(login_url=reverse_lazy('login'))
 def displaybooks(request):
     books = Book.objects.all()
     for b in books:
-            b.pic_path = b.picture.url[14:]
-            return render (request, 'bookMng/displaybooks.html', {
-                'item_link': MainMenu.objects.all(), 'books': books
-            })
+        b.pic_path = b.picture.url[19:]
+    return render(request,
+                  'bookMng/displaybooks.html',
+                  {
+                      'item_list': MainMenu.objects.all(),
+                      'books': books
+                  })
+
+@login_required(login_url=reverse_lazy('login'))
+def book_detail(request, book_id):
+    book = Book.objects.get(id=book_id)
+    book.pic_path = book.picture.url[19:]
+    return render(request,
+                  'bookMng/book_detail.html',
+                  {
+                      'item_list': MainMenu.objects.all(),
+                      'book': book
+                  })
+
+@login_required(login_url=reverse_lazy('login'))
+def postbook(request):
+    submitted = False
+    if request.method == 'POST':
+        form = BookForm(request.POST, request.FILES)
+        if form.is_valid():
+            book = form.save(commit=False)
+            try:
+                book.user_name = request.user
+            except Exception:
+                pass
+            book.save()
+            return HttpResponseRedirect('/postbook?submitted=True')
+    else:
+        form = BookForm()
+        if 'submitted' in request.GET:
+            submitted = True
+    return render(request,
+                  'bookMng/postbook.html',
+                  {
+                      'form': form,
+                      'item_list': MainMenu.objects.all(),
+                      'submitted': submitted
+                  })
+
 
 def requestedbooks(request):
     requestbooks = RequestBook.objects.all()
@@ -79,28 +118,3 @@ def signup(request):
             'form': form
     })
 
-
-# Contact function used to send message.
-def contact(request):
-    if request.method == "POST":
-        # Fields to be collected for message
-        post_username = request.POST['post-username']
-        message_book = request.POST['message-book']
-        message_name = request.POST['message-name']
-        message_email = request.POST['message-email']
-        message = request.POST['message']
-
-        # Obtain email of post user from auth table
-        user = User.objects.get(username=post_username)
-        user_email = user.email
-
-        # Send email
-        send_mail(
-            'Re: ' + message_book + ', Message from ' + message_name,
-            message,
-            message_email,
-            [user_email],
-            )
-        return render(request, 'bookMng/book_detail.html', {'message_name': message_name})
-    else:
-        return render(request, 'bookMng/book_detail.html', {})

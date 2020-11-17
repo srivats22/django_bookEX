@@ -50,7 +50,7 @@
 {% if book.username != request.user %}
     <h2 align="center">Have the same book?<br>Write your own review!</h2>
     <form action="" enctype="multipart/form-data" method="post" novalidate>
-        <table>
+        <table align="center">
             {{ form.as_table }}
             <tr>
                 <td colspan="2">
@@ -62,7 +62,7 @@
     </form>
 {% endif %}
 {% for review in book.review_set.all %}
-    <p>
+    <p align="center">
         <b>{{ review.rating }}/5</b> <br>
         {{ review.username }} <br>
         Reviewed on {{ review.publishdate }} <br>

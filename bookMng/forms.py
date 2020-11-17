@@ -1,5 +1,6 @@
 from django.forms import ModelForm
 from .models import Book, RequestBook
+from .models import Review
 
 
 class RequestBookForm(ModelForm):
@@ -20,4 +21,13 @@ class BookForm(ModelForm):
             'web',
             'price',
             'picture',
+        ]
+
+class ReviewForm(ModelForm):
+    class Meta:
+        model = Review
+        fields = [
+            'rating',
+            'title',
+            'description',
         ]

@@ -46,4 +46,28 @@
             </td>
         </tr>
 </table>
+
+{% if book.username != request.user %}
+    <h2 align="center">Have the same book?<br>Write your own review!</h2>
+    <form action="" enctype="multipart/form-data" method="post" novalidate>
+        <table>
+            {{ form.as_table }}
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="Submit">
+                </td>
+            </tr>
+        </table>
+        {% csrf_token %}
+    </form>
+{% endif %}
+{% for review in book.review_set.all %}
+    <p>
+        <b>{{ review.rating }}/5</b> <br>
+        {{ review.username }} <br>
+        Reviewed on {{ review.publishdate }} <br>
+        <b>{{ review.title }}</b> <br>
+        {{ review.description }} <br>
+    </p>
+{% endfor %}
 {% endblock content %}

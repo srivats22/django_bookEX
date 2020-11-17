@@ -6,6 +6,6 @@ urlpatterns = [
     path('displaybooks', views.displaybooks, name='displaybooks'),
     path('requestbook', views.requestbook, name='requestbook'),
     path('displayrequest', views.requestedbooks, name='requestedbooks')
-    # urlpattern for contact form.
-    path('book_detail', views.contact, name="contact"),
+    # # urlpattern for contact form.
+    # path('book_detail', views.contact, name="contact"),
 ]

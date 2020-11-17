@@ -1,11 +1,15 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
-from django.views.generic.edit import CreateView
-from django.contrib.auth.forms import UserCreationForm
-from django.urls import reverse_lazy
 from .models import MainMenu
 from .models import Book, RequestBook
 from .forms import RequestBookForm
+from .forms import BookForm
+
+from django.urls import reverse_lazy
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
+from django.views.generic.edit import CreateView
+
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -20,13 +24,54 @@ def home(request):
     return render(request, 'home.html')
 
 
+@login_required(login_url=reverse_lazy('login'))
 def displaybooks(request):
     books = Book.objects.all()
     for b in books:
-            b.pic_path = b.picture.url[14:]
-            return render (request, 'bookMng/displaybooks.html', {
-                'item_link': MainMenu.objects.all(), 'books': books
-            })
+        b.pic_path = b.picture.url[19:]
+    return render(request,
+                  'bookMng/displaybooks.html',
+                  {
+                      'item_list': MainMenu.objects.all(),
+                      'books': books
+                  })
+
+@login_required(login_url=reverse_lazy('login'))
+def book_detail(request, book_id):
+    book = Book.objects.get(id=book_id)
+    book.pic_path = book.picture.url[19:]
+    return render(request,
+                  'bookMng/book_detail.html',
+                  {
+                      'item_list': MainMenu.objects.all(),
+                      'book': book
+                  })
+
+@login_required(login_url=reverse_lazy('login'))
+def postbook(request):
+    submitted = False
+    if request.method == 'POST':
+        form = BookForm(request.POST, request.FILES)
+        if form.is_valid():
+            book = form.save(commit=False)
+            try:
+                book.user_name = request.user
+            except Exception:
+                pass
+            book.save()
+            return HttpResponseRedirect('/postbook?submitted=True')
+    else:
+        form = BookForm()
+        if 'submitted' in request.GET:
+            submitted = True
+    return render(request,
+                  'bookMng/postbook.html',
+                  {
+                      'form': form,
+                      'item_list': MainMenu.objects.all(),
+                      'submitted': submitted
+                  })
+
 
 def requestedbooks(request):
     requestbooks = RequestBook.objects.all()

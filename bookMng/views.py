@@ -2,6 +2,7 @@ from .models import MainMenu
 from .models import Book, RequestBook
 from .forms import RequestBookForm
 from .forms import BookForm
+from .forms import ReviewForm
 
 from django.urls import reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
@@ -118,3 +119,28 @@ def signup(request):
             'form': form
     })
 
+
+@login_required(login_url=reverse_lazy('login'))
+def book_detail(request, book_id):
+    book = Book.objects.get(id=book_id)
+    book.pic_path = book.picture.url[14:]
+    if request.method == 'POST':
+        form = ReviewForm(request.POST, request.FILES)
+        if form.is_valid():
+            review = form.save(commit=False)
+            try:
+                review.book = book
+                review.username = request.user
+            except Exception:
+                pass
+            review.save()
+            return HttpResponseRedirect(f'/book_detail/{book_id}')
+    else:
+        form = ReviewForm()
+    return render(request,
+                  'bookMng/book_detail.html',
+                  {
+                      'form': form,
+                      'item_list': MainMenu.objects.all(),
+                      'book': book
+                  })

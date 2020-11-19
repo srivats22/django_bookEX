@@ -3,6 +3,7 @@ from .models import Book, RequestBook
 from .forms import RequestBookForm
 from .forms import BookForm
 from .forms import ReviewForm
+from .forms import SearchForm
 
 from django.urls import reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
@@ -42,6 +43,57 @@ def displaybooks(request):
                       'item_list': MainMenu.objects.all(),
                       'books': books
                   })
+
+
+@login_required(login_url=reverse_lazy('login'))
+def book_delete(request, book_id):
+    book = Book.objects.get(id=book_id)
+    book.delete()
+    return render(request,
+                  'bookMng/book_delete.html',
+                  {
+                      'item_list': MainMenu.objects.all(),
+                  })
+
+
+@login_required(login_url=reverse_lazy('login'))
+def mybooks(request):
+    books = Book.objects.filter(user_name=request.user) # like database select
+    for b in books:
+        b.pic_path = b.picture.url[14:]
+    return render(request,
+                  'bookMng/mybooks.html',
+                  {
+                      'item_list': MainMenu.objects.all(),
+                      'books': books
+                  })
+
+
+@login_required(login_url=reverse_lazy('login'))
+def book_search(request):
+    submitted = False
+    if request.method == 'POST':
+        form = SearchForm(request.POST, request.FILES)
+        if form.is_valid():
+            data = form.cleaned_data['name']
+            books = Book.objects.filter(name__icontains=data)
+            return render(request,
+                          'bookMng/search_results.html',
+                          {
+                              'books': books
+                          })
+    else:
+        form = SearchForm()
+        if 'submitted' in request.GET:
+            submitted = True
+    return render(request,
+                  'bookMng/book_search.html',
+                  {
+                      'form': form,
+                      'item_list': MainMenu.objects.all(),
+                      'submitted': submitted
+                  })
+
 
 @login_required(login_url=reverse_lazy('login'))
 def book_detail(request, book_id):

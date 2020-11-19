@@ -28,6 +28,15 @@ class BookForm(ModelForm):
             'picture',
         ]
 
+
+class SearchForm(ModelForm):
+    class Meta:
+        model = Book
+        fields = [
+            'name',
+        ]
+
+
 class ReviewForm(ModelForm):
     class Meta:
         model = Review

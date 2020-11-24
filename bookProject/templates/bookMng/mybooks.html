@@ -40,6 +40,7 @@
   </div>
 </nav>
 <h1 align="center"> My Books Page </h1>
+{% if books %}
 <table align="center" border="2" width="500">
     {% for book in books %}
         <tr>
@@ -61,4 +62,7 @@
     {% endfor %}
     <a href="/">Back</a>
 </table>
+{% else %}
+<h4 align="center">You have not posted any books.</h4>
+{% endif %}
 {% endblock content %}

@@ -1,6 +1,7 @@
 from django.forms import ModelForm
 from .models import Book, RequestBook
 from .models import Review
+from .models import Message
 from django import forms
 
 # Importing UserCreationForm
@@ -60,3 +61,13 @@ class UserCreationForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+class MessageForm(ModelForm):
+    class Meta:
+        model = Message
+        fields = [
+            'receiver',
+            'subject',
+            'message'
+        ]

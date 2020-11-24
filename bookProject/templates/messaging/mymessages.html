@@ -1,4 +1,10 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+   My Messages
+{% endblock title %}
+
 
 {% block content %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -33,18 +39,43 @@
     {% endif %}
   </div>
 </nav>
-<h1 align="center">Welcome to Book Exchange</h1>
-<p align="center" style="font-size: 20px">Book Exchange is a website that makes it easier for users
-to exchange books.</p>
-<p align="center" style="font-size: 20px">Here are some of the features you can use:</p>
-<center>
-  <ul>
-    <a href="/displaybooks"><ol>View All books available</ol></a>
-    <a href="/postbook"><ol>Post a book</ol></a>
-    <a href="/requestbook"><ol>Request a book</ol></a>
-    <a href="/mybooks"><ol>See your books</ol></a>
-    <a href="/book_search"><ol>Search for a book</ol></a>
-    <a href="/mymessages"><ol>Messages Inbox</ol></a>
-  </ul>
-</center>
+<h1 align="center"> My Messages </h1>
+<a href="/sendmessage"><ol>New Message</ol></a>
+{% if messages %}
+<table align="center" border="2" width="500">
+    <tr>
+        <th>From</th>
+        <th>To</th>
+        <th>Subject</th>
+        <th>Message</th>
+        <th>Date and Time</th>
+        <th>Delete</th>
+    </tr>
+    {% for message in messages %}
+        <tr>
+            <td>
+                {{ message.sender }}
+            </td>
+            <td>
+                {{ message.receiver }}
+            </td>
+            <td>
+                {{ message.subject }}
+            </td>
+            <td>
+                {{ message.message }}
+            </td>
+            <td>
+                {{ message.datetime }}
+            </td>
+            <td>
+                <a href="message_delete/{{ message.id }}">Delete</a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+{% else %}
+<h4 align="center">You have no messages.</h4>
+{% endif %}
+<a href="/">Back</a>
 {% endblock content %}

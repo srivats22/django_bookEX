@@ -19,9 +19,6 @@
       <li class="nav-item">
         <a class="nav-link" href="/displayrequest">Requested Books</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/book_search">Book Search</a>
-      </li>
       <!-- ## Jason END ## -->
     </ul>
     {% if user.is_authenticated %}
@@ -43,7 +40,6 @@ to exchange books.</p>
     <a href="/postbook"><ol>Post a book</ol></a>
     <a href="/displayrequest"><ol>See Requested Books</ol></a>
     <a href="/mybooks"><ol>See your books</ol></a>
-    <a href="/book_search"><ol>Search for a book</ol></a>
   </ul>
 </center>
 {% endblock content %}

@@ -49,6 +49,7 @@
         <th>Subject</th>
         <th>Message</th>
         <th>Date and Time</th>
+        <th>Reply</th>
         <th>Delete</th>
     </tr>
     {% for message in messages %}
@@ -67,6 +68,9 @@
             </td>
             <td>
                 {{ message.datetime }}
+            </td>
+            <td>
+                <a href="message_reply/{{ message.id }}">Reply</a>
             </td>
             <td>
                 <a href="message_delete/{{ message.id }}">Delete</a>

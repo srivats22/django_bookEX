@@ -204,7 +204,7 @@ def contact(request):
 
         newmessage.sender = request.user
         newmessage.receiver = User.objects.get(username=post_username)
-        newmessage.subject = subject + ' Book'
+        newmessage.subject = subject
         newmessage.message = message
 
         newmessage.save()
@@ -260,4 +260,33 @@ def message_delete(request, message_id):
                   {
                       'item_list': MainMenu.objects.all(),
                   })
+
+
+@login_required(login_url=reverse_lazy('login'))
+def message_reply(request, message_id):
+    message = Message.objects.get(id=message_id)
+    return render(request, 'messaging/message_reply.html',
+                  {
+                      'item_list': MainMenu.objects.all(),
+                      'message': message
+                  })
+
+
+def reply(request):
+    if request.method == "POST":
+        newmessage = Message()
+        receiver = request.POST['receiver']
+        subject = request.POST['subject']
+        message = request.POST['message']
+
+        newmessage.sender = request.user
+        newmessage.receiver = User.objects.get(username=receiver)
+        newmessage.subject = subject
+        newmessage.message = message
+
+        newmessage.save()
+
+        return render(request, 'messaging/message_reply.html', {'message_receiver': newmessage.receiver})
+    else:
+        return render(request, 'messaging/message_reply.html', {})
 

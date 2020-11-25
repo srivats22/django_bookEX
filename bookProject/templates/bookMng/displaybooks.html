@@ -24,9 +24,6 @@
       <li class="nav-item">
         <a class="nav-link" href="/displayrequest">Requested Books</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/book_search">Book Search</a>
-      </li>
       <!-- ## Jason END ## -->
     </ul>
     {% if user.is_authenticated %}
@@ -39,7 +36,17 @@
   </div>
 </nav>
 <h2 align="center">Display Book Page</h2>
-<center><a href="/book_search" style="font-size: 25px">You can search for a book here</a></center>
+{% if submitted %}
+<p>Success</p>
+{% else %}
+<center>
+<form action="" enctype="multipart/form-data" method="post" novalidate>
+   <table>
+      {{ form.as_table }}
+   </table>
+   {% csrf_token %}
+</form>
+{% endif %}
 <center><a href="/requestbook">Can't find a book request it here</a></center>
 <br>
 <table align="center" border="2" width="500">

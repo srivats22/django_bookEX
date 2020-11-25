@@ -24,9 +24,6 @@
       <li class="nav-item">
         <a class="nav-link" href="/displayrequest">Requested Books</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/book_search">Book Search</a>
-      </li>
       <!-- ## Jason END ## -->
     </ul>
     {% if user.is_authenticated %}
@@ -38,22 +35,24 @@
     {% endif %}
   </div>
 </nav>
-<h1> Post Book </h1>
-{% if submitted %}
-<p>
-    Post Successfully!
-</p>
-{% else %}
-    <form action="" enctype="multipart/form-data" method="post" novalidate>
-        <table>
-            {{ form.as_table }}
-            <tr>
-                <td colspan="2">
-                    <input type="submit" value="Submit">
-                </td>
-            </tr>
-        </table>
-        {% csrf_token %}
-    </form>
+<center>
+    <h1> Post Book </h1>
+    {% if submitted %}
+    <p>
+        Post Successfully!
+    </p>
+    {% else %}
+        <form action="" enctype="multipart/form-data" method="post" novalidate>
+            <table>
+                {{ form.as_table }}
+                <tr>
+                    <td colspan="2">
+                        <input type="submit" value="Submit">
+                    </td>
+                </tr>
+            </table>
+            {% csrf_token %}
+        </form>
+</center>
 {% endif %}
 {% endblock content %}

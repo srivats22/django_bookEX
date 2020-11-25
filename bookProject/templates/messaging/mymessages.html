@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-   My Books
+   My Messages
 {% endblock title %}
 
 
@@ -23,7 +23,10 @@
         <a class="nav-link" href="/postbook">Post Books</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/displayrequest">Requested Books</a>
+        <a class="nav-link" href="/requestbook">Request Books</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/book_search">Book Search</a>
       </li>
       <!-- ## Jason END ## -->
     </ul>
@@ -36,29 +39,47 @@
     {% endif %}
   </div>
 </nav>
-<h1 align="center"> My Books Page </h1>
-{% if books %}
+<h1 align="center"> My Messages </h1>
+<a href="/sendmessage"><ol>New Message</ol></a>
+{% if messages %}
 <table align="center" border="2" width="500">
-    {% for book in books %}
+    <tr>
+        <th>From</th>
+        <th>To</th>
+        <th>Subject</th>
+        <th>Message</th>
+        <th>Date and Time</th>
+        <th>Reply</th>
+        <th>Delete</th>
+    </tr>
+    {% for message in messages %}
         <tr>
             <td>
-                <a href="book_detail/{{ book.id }}">
-                    {{ book.name }}
-                </a>
+                {{ message.sender }}
             </td>
             <td>
-                {{ book.price }}
+                {{ message.receiver }}
             </td>
             <td>
-                {{ book.user_name }}
+                {{ message.subject }}
             </td>
             <td>
-                <a href="book_delete/{{ book.id }}">Delete Book</a>
+                {{ message.message }}
+            </td>
+            <td>
+                {{ message.datetime }}
+            </td>
+            <td>
+                <a href="message_reply/{{ message.id }}">Reply</a>
+            </td>
+            <td>
+                <a href="message_delete/{{ message.id }}">Delete</a>
             </td>
         </tr>
     {% endfor %}
 </table>
 {% else %}
-<h4 align="center">You have not posted any books.</h4>
+<h4 align="center">You have no messages.</h4>
 {% endif %}
+<a href="/">Back</a>
 {% endblock content %}

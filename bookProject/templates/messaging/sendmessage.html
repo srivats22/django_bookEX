@@ -1,4 +1,9 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Send Message
+{% endblock title %}
 
 {% block content %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -17,7 +22,10 @@
         <a class="nav-link" href="/postbook">Post Books</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/displayrequest">Requested Books</a>
+        <a class="nav-link" href="/requestbook">Request Books</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/book_search">Book Search</a>
       </li>
       <!-- ## Jason END ## -->
     </ul>
@@ -30,18 +38,24 @@
     {% endif %}
   </div>
 </nav>
-<h1 align="center">Welcome to Book Exchange</h1>
-<p align="center" style="font-size: 20px">Book Exchange is a website that makes it easier for users
-to exchange books.</p>
-<p align="center" style="font-size: 20px">Here are some of the features you can use:</p>
-<center>
-  <ul>
-    <a href="/displaybooks"><ol>View All books available</ol></a>
-    <a href="/postbook"><ol>Post a book</ol></a>
-    <a href="/displayrequest"><ol>See Requested Books</ol></a>
-    <a href="/mybooks"><ol>See your books</ol></a>
-    <a href="/book_search"><ol>Search for a book</ol></a>
-    <a href="/mymessages"><ol>Messages Inbox</ol></a>
-  </ul>
-</center>
+<h1> Send Message </h1>
+{% if submitted %}
+<p>
+    Message was sent successfully!
+</p>
+<a href="/mymessages">Back</a>
+{% else %}
+    <form action="" enctype="multipart/form-data" method="post" novalidate>
+        <table>
+            {{ form.as_table }}
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="Submit">
+                </td>
+            </tr>
+        </table>
+        {% csrf_token %}
+    </form>
+<a href="/mymessages">Back</a>
+{% endif %}
 {% endblock content %}

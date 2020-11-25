@@ -10,8 +10,14 @@ urlpatterns = [
     path('requestbook', views.requestbook, name='requestbook'),
     path('displayrequest', views.requestedbooks, name='requestedbooks'),
     path('displayrequest', views.requestedbooks, name='requestedbooks'),
-    # urlpattern for contact form.
-    path('book_detail', views.contact, name="contact"),
     path('mybooks', views.mybooks, name='mybooks'),
     path('book_search', views.book_search, name='book_search'),
+    # urlpatterns for messaging.
+    path('book_detail', views.contact, name='contact'),
+    path('mymessages', views.mymessages, name='mymessages'),
+    path('sendmessage', views.sendmessage, name='sendmessage'),
+    path('message_delete/<int:message_id>', views.message_delete, name='message_delete'),
+    path('message_reply/<int:message_id>', views.message_reply, name='message_reply'),
+    path('message_reply', views.reply, name='reply'),
+
 ]

@@ -13,8 +13,9 @@ from django.views.generic.edit import CreateView
 from .forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 
-# send_mail used for messaging capabilities.
-from django.core.mail import send_mail
+# Messaging Stuff
+from .models import Message
+from .forms import RequestBookForm, MessageForm
 
 # Use User auth table for username info
 from django.contrib.auth.models import User
@@ -34,32 +35,15 @@ def home(request):
 
 @login_required(login_url=reverse_lazy('login'))
 def displaybooks(request):
-    form = SearchForm()
-    books = book_search(request)
-    try:
-        for b in books:
-            b.pic_path = b.picture.url[19:]
-    except Exception:
-        return HttpResponseRedirect('/displaybooks')
+    books = Book.objects.all()
+    for b in books:
+        b.pic_path = b.picture.url[14:]
     return render(request,
                   'bookMng/displaybooks.html',
                   {
                       'item_list': MainMenu.objects.all(),
-                      'books': books,
-                      'form': form
+                      'books': books
                   })
-
-
-@login_required(login_url=reverse_lazy('login'))
-def book_search(request):
-    if request.method == 'POST':
-        form = SearchForm(request.POST, request.FILES)
-        if form.is_valid():
-            data = form.cleaned_data['name']
-            books = Book.objects.filter(name__icontains=data)
-            return books
-    else:
-       return Book.objects.all()
 
 
 @login_required(login_url=reverse_lazy('login'))
@@ -75,7 +59,7 @@ def book_delete(request, book_id):
 
 @login_required(login_url=reverse_lazy('login'))
 def mybooks(request):
-    books = Book.objects.filter(user_name=request.user)
+    books = Book.objects.filter(user_name=request.user) # like database select
     for b in books:
         b.pic_path = b.picture.url[14:]
     return render(request,
@@ -87,14 +71,28 @@ def mybooks(request):
 
 
 @login_required(login_url=reverse_lazy('login'))
-def book_detail(request, book_id):
-    book = Book.objects.get(id=book_id)
-    book.pic_path = book.picture.url[19:]
+def book_search(request):
+    submitted = False
+    if request.method == 'POST':
+        form = SearchForm(request.POST, request.FILES)
+        if form.is_valid():
+            data = form.cleaned_data['name']
+            books = Book.objects.filter(name__icontains=data)
+            return render(request,
+                          'bookMng/search_results.html',
+                          {
+                              'books': books
+                          })
+    else:
+        form = SearchForm()
+        if 'submitted' in request.GET:
+            submitted = True
     return render(request,
-                  'bookMng/book_detail.html',
+                  'bookMng/book_search.html',
                   {
+                      'form': form,
                       'item_list': MainMenu.objects.all(),
-                      'book': book
+                      'submitted': submitted
                   })
 
 
@@ -196,27 +194,98 @@ def book_detail(request, book_id):
                   })
 
 
-# Contact function used to send message.
+# Definitions used for messaging.
 def contact(request):
     if request.method == "POST":
-        # Fields to be collected for message
+        newmessage = Message()
         post_username = request.POST['post-username']
-        message_book = request.POST['message-book']
-        message_name = request.POST['message-name']
-        message_email = request.POST['message-email']
+        subject = request.POST['message-book']
         message = request.POST['message']
 
-        # Obtain email of post user from auth table
-        user = User.objects.get(username=post_username)
-        user_email = user.email
+        newmessage.sender = request.user
+        newmessage.receiver = User.objects.get(username=post_username)
+        newmessage.subject = subject
+        newmessage.message = message
 
-        # Message composition for email
-        send_mail(
-            'Re: ' + message_book + ', Message from ' + message_name,
-            message,
-            message_email,
-            [user_email],
-            )
-        return render(request, 'bookMng/book_detail.html', {'message_name': message_name})
+        newmessage.save()
+
+        return render(request, 'bookMng/book_detail.html', {'message_name': newmessage.sender})
     else:
         return render(request, 'bookMng/book_detail.html', {})
+
+
+@login_required(login_url=reverse_lazy('login'))
+def mymessages(request):
+    messages = Message.objects.filter(receiver=request.user)
+
+    return render(request, 'messaging/mymessages.html',
+                  {
+                      'item_list': MainMenu.objects.all(),
+                      'messages': messages
+                  })
+
+
+@login_required(login_url=reverse_lazy('login'))
+def sendmessage(request):
+    submitted = False
+    if request.method == 'POST':
+        form = MessageForm(request.POST, request.FILES)
+        if form.is_valid():
+            Message = form.save(commit=False)
+            try:
+                Message.sender = request.user
+            except Exception:
+                pass
+            Message.save()
+            return HttpResponseRedirect('/sendmessage?submitted=True')
+    else:
+        form = MessageForm()
+        if 'submitted' in request.GET:
+            submitted = True
+    return render(request,
+                  'messaging/sendmessage.html',
+                  {
+                      'form': MessageForm,
+                      'item_list': MainMenu.objects.all(),
+                      'submitted': submitted
+                  })
+
+
+@login_required(login_url=reverse_lazy('login'))
+def message_delete(request, message_id):
+    message = Message.objects.get(id=message_id)
+    message.delete()
+    return render(request,
+                  'messaging/message_delete.html',
+                  {
+                      'item_list': MainMenu.objects.all(),
+                  })
+
+
+@login_required(login_url=reverse_lazy('login'))
+def message_reply(request, message_id):
+    message = Message.objects.get(id=message_id)
+    return render(request, 'messaging/message_reply.html',
+                  {
+                      'item_list': MainMenu.objects.all(),
+                      'message': message
+                  })
+
+
+def reply(request):
+    if request.method == "POST":
+        newmessage = Message()
+        receiver = request.POST['receiver']
+        subject = request.POST['subject']
+        message = request.POST['message']
+
+        newmessage.sender = request.user
+        newmessage.receiver = User.objects.get(username=receiver)
+        newmessage.subject = subject
+        newmessage.message = message
+
+        newmessage.save()
+
+        return render(request, 'messaging/message_reply.html', {'message_receiver': newmessage.receiver})
+    else:
+        return render(request, 'messaging/message_reply.html', {})

@@ -22,7 +22,10 @@
         <a class="nav-link" href="/postbook">Post Books</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/displayrequest">Requested Books</a>
+        <a class="nav-link" href="/requestbook">Request Books</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/book_search">Book Search</a>
       </li>
       <!-- ## Jason END ## -->
     </ul>
@@ -35,7 +38,6 @@
     {% endif %}
   </div>
 </nav>
-<center>
 <h1> Post Book </h1>
 {% if submitted %}
 <p>
@@ -53,6 +55,5 @@
         </table>
         {% csrf_token %}
     </form>
-</center>
 {% endif %}
 {% endblock content %}

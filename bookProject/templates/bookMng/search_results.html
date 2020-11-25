@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Display Books
+{% endblock title %}
+
+{% block content %}
+<h2 align="center">Search Results Page</h2>
+<table align="center" border="2" width="500">
+    {% for book in books %}
+    <tr>
+        <td>
+            <a href="book_detail/{{ book.id }}">
+                    {{ book.name }}
+            </a>
+        </td>
+        <td>
+            {{ book.price }}
+        </td>
+        <td>
+            {{ book.user_name }}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+<a href="/book_search">Back</a>
+{% endblock content %}

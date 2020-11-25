@@ -2,8 +2,9 @@
 {% load static %}
 
 {% block title %}
-    Display Books
+   Book Search
 {% endblock title %}
+
 
 {% block content %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -38,25 +39,21 @@
     {% endif %}
   </div>
 </nav>
-<h2 align="center">Display Book Page</h2>
-<center><a href="/book_search" style="font-size: 25px">You can search for a book here</a></center>
-<center><a href="/requestbook">Can't find a book request it here</a></center>
-<br>
-<table align="center" border="2" width="500">
-    {% for book in books %}
-    <tr>
-        <td>
-            <a href="book_detail/{{ book.id }}">
-                    {{ book.name }}
-            </a>
-        </td>
-        <td>
-            {{ book.price }}
-        </td>
-        <td>
-            {{ book.user_name }}
-        </td>
-    </tr>
-    {% endfor %}
-</table>
+<h1 align="center"> Search Page </h1>
+{% if submitted %}
+<p>Success</p>
+{% else %}
+<form action="" enctype="multipart/form-data" method="post" novalidate>
+   <table>
+      {{ form.as_table }}
+      <tr>
+         <td colspan="2">
+            <input type="submit" value="Submit">
+         </td>
+      </tr>
+   </table>
+   {% csrf_token %}
+</form>
+{% endif %}
+<a href="/">Back</a>
 {% endblock content %}

@@ -62,6 +62,7 @@ class UserCreationForm(UserCreationForm):
             user.save()
         return user
 
+
 class MessageForm(ModelForm):
     class Meta:
         model = Message

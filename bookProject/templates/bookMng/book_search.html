@@ -2,8 +2,9 @@
 {% load static %}
 
 {% block title %}
-    New Message
+   Book Search
 {% endblock title %}
+
 
 {% block content %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -39,26 +40,21 @@
     {% endif %}
   </div>
 </nav>
-<h1 align="center"> New Message </h1>
+<h1 align="center"> Search Page </h1>
 {% if submitted %}
-<h5 align="center">Sent successfully!</h5>
-<ol><a class="btn btn-outline-primary" href="/mymessages">Back</a></ol>
+<p>Success</p>
 {% else %}
 <form action="" enctype="multipart/form-data" method="post" novalidate>
-{% csrf_token %}
-    <table class="table table-borderless" width="80%">
-        {{ form }}
-        <tr>
-            <td colspan="2">
-                <input class="btn btn-primary" type="submit" value="Submit">
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <a class="btn btn-outline-primary" href="/mymessages">Back</a>
-            </td>
-        </tr>
-    </table>
+   <table>
+      {{ form.as_table }}
+      <tr>
+         <td colspan="2">
+            <input type="submit" value="Submit">
+         </td>
+      </tr>
+   </table>
+   {% csrf_token %}
 </form>
 {% endif %}
+<a href="/">Back</a>
 {% endblock content %}

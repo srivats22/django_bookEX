@@ -280,3 +280,4 @@ def reply(request):
         return render(request, 'messaging/message_reply.html', {'message_receiver': newmessage.receiver})
     else:
         return render(request, 'messaging/message_reply.html', {})
+

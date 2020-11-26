@@ -45,11 +45,11 @@
                     <img src="{% static book.pic_path %}" width="175" height="250">
                 </a>
             </td>
-            <td align="center">
+            <td>
                 <a href="book_detail/{{ book.id }}">
                     {{ book.name }}
                 </a><br>
-               ${{ book.price }}<br>
+                <b>${{ book.price }}</b><br>
                 <b><a href="book_delete/{{ book.id }}">Delete Book</a></b>
             </td>
         </tr>

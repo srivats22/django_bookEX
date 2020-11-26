@@ -166,12 +166,13 @@ def book_detail(request, book_id):
         form = ReviewForm(request.POST, request.FILES)
         if form.is_valid():
             review = form.save(commit=False)
-            try:
-                review.book = book
-                review.username = request.user
-            except Exception:
-                pass
-            review.save()
+            if 1 <= review.rating <= 5:
+                try:
+                    review.book = book
+                    review.username = request.user
+                except Exception:
+                    pass
+                review.save()
             return HttpResponseRedirect(f'/book_detail/{book_id}')
     else:
         form = ReviewForm()

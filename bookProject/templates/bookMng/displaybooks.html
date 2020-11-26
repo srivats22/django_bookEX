@@ -25,7 +25,7 @@
         <a class="nav-link" href="/requestbook">Request Books</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/book_search">Book Search</a>
+        <a class="nav-link" href="/displayrequest">Requested Books</a>
       </li>
       <!-- ## Jason END ## -->
     </ul>
@@ -40,24 +40,37 @@
   </div>
 </nav>
 <h2 align="center">Display Book Page</h2>
-<center><a href="/book_search" style="font-size: 25px">You can search for a book here</a></center>
 <center><a href="/requestbook">Can't find a book request it here</a></center>
+<h2 align="center" style="padding: 20px">Booking being sold</h2>
+{% if submitted %}
+<p>Success</p>
+{% else %}
+<center>
+<form action="" enctype="multipart/form-data" method="post" novalidate>
+   <table>
+      {{ form.as_table }}
+   </table>
+   {% csrf_token %}
+</form>
+{% endif %}
+<center>Want to sell a book?<a href="/postbook">Click here</a> </center>
 <br>
-<table align="center" border="2" width="500">
+<div class="row row-cols-1 row-cols-md-3">
     {% for book in books %}
-    <tr>
-        <td>
-            <a href="book_detail/{{ book.id }}">
-                    {{ book.name }}
-            </a>
-        </td>
-        <td>
-            {{ book.price }}
-        </td>
-        <td>
-            {{ book.user_name }}
-        </td>
-    </tr>
+    <div class="card mb-3" style="max-width: 540px;">
+      <div class="row no-gutters">
+        <div class="col-md-4">
+          <img src="{% static book.pic_path %}" class="card-img" alt="..." style="padding: 20px">
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <a href="book_detail/{{ book.id }}"><h5 class="card-title"> {{ book.name }}</h5></a>
+            <a href="/sendmessage"><p class="card-text">Contact Seller {{ book.user_name }}</p></a>
+            <p class="card-text"><small class="text-muted">${{ book.price }}</small></p>
+          </div>
+        </div>
+      </div>
+    </div>
     {% endfor %}
-</table>
+</div>
 {% endblock content %}

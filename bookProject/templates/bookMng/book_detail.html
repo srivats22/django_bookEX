@@ -5,16 +5,34 @@
    Book Detail
 {% endblock title %}
 
-
-{% block sidenav %}
-    {% for item in item_list %}
-        <li>
-            <a href="{{ item.link }}"> {{ item.item }} </a>
-        </li>
-    {% endfor %}
-{% endblock sidenav %}
-
 {% block content %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <a class="navbar-brand" href="/">Book Exchange</a>
+
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <!-- ## Jason START ## -->
+      <li class="nav-item">
+        <a class="nav-link" href="/displaybooks">Display Books</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/displayrequest">Requested Books</a>
+      </li>
+      <!-- ## Jason END ## -->
+    </ul>
+    {% if user.is_authenticated %}
+      <a class="nav-link" href="/mybooks">My Books</a>
+      <a class="nav-link" href="/mymessages">My Messages</a>
+      <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+    <a class="nav-link" href="{% url 'login' %}">Login</a>
+    <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
+    {% endif %}
+  </div>
+</nav>
 <!--if statement to give thanks if message was sent-->
 {% if message_name %}
 <h2 align="center">Thanks {{ message_name }}!</h2>
@@ -35,24 +53,57 @@
             </td>
         </tr>
 </table>
-
 <!--Review Form-->
-<div class="my-5">
-    {% if book.username != request.user %}
+<h2 class="py-3" align="center">Have the same book?
+    <br>Write your own review!
+    <br><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Write a review
+    </button>
+</h2>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Review Form</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {% if book.username != request.user %}
         <h2 class="py-3" align="center">Have the same book?<br>Write your own review!</h2>
         <form action="" enctype="multipart/form-data" method="post" novalidate>
             <table align="center">
                 {{ form.as_table }}
                 <tr>
                     <td colspan="2">
-                        <input type="submit" value="Submit">
+                        <input type="submit" value="Submit" class="btn btn-primary">
                     </td>
                 </tr>
             </table>
             {% csrf_token %}
         </form>
-    {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
 </div>
+<!--<div class="my-5">-->
+<!--    {% if book.username != request.user %}-->
+<!--        <h2 class="py-3" align="center">Have the same book?<br>Write your own review!</h2>-->
+<!--        <form action="" enctype="multipart/form-data" method="post" novalidate>-->
+<!--            <table align="center">-->
+<!--                {{ form.as_table }}-->
+<!--                <tr>-->
+<!--                    <td colspan="2">-->
+<!--                        <input type="submit" value="Submit">-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--            </table>-->
+<!--            {% csrf_token %}-->
+<!--        </form>-->
+<!--    {% endif %}-->
+<!--</div>-->
 <div class="my-5">
     <table align="center" width="50%">
         {% for review in book.review_set.all %}

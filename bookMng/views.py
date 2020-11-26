@@ -37,7 +37,7 @@ def home(request):
 def displaybooks(request):
     books = Book.objects.all()
     for b in books:
-        b.pic_path = b.picture.url[14:]
+        b.pic_path = b.picture.url[19:]
     return render(request,
                   'bookMng/displaybooks.html',
                   {
@@ -61,7 +61,7 @@ def book_delete(request, book_id):
 def mybooks(request):
     books = Book.objects.filter(user_name=request.user) # like database select
     for b in books:
-        b.pic_path = b.picture.url[14:]
+        b.pic_path = b.picture.url[19:]
     return render(request,
                   'bookMng/mybooks.html',
                   {
@@ -176,12 +176,13 @@ def book_detail(request, book_id):
         form = ReviewForm(request.POST, request.FILES)
         if form.is_valid():
             review = form.save(commit=False)
-            try:
-                review.book = book
-                review.username = request.user
-            except Exception:
-                pass
-            review.save()
+            if 1 <= review.rating <= 5:
+                try:
+                    review.book = book
+                    review.username = request.user
+                except Exception:
+                    pass
+                review.save()
             return HttpResponseRedirect(f'/book_detail/{book_id}')
     else:
         form = ReviewForm()

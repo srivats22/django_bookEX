@@ -48,8 +48,8 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        {% for rb in requestedbooks %}
+      {% for rb in requestedbooks %}
+        <tr>
           <td>
               {{rb.name}}
           </td>
@@ -59,8 +59,9 @@
           <td>
               <a href="mailto:{{rb.email}}">{{rb.email}}</a>
           </td>
+
+        </tr>
       {% endfor %}
-      </tr>
     </tbody>
   </table>
 </div>

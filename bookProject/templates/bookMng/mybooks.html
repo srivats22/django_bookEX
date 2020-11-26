@@ -40,29 +40,23 @@
   </div>
 </nav>
 <h1 align="center"> My Books Page </h1>
-{% if books %}
-<table align="center" border="2" width="500">
+<table align="center" width="50%">
     {% for book in books %}
-        <tr>
-            <td>
+        <tr style="border-bottom: 2px solid black">
+            <td style="padding-bottom: 15px; padding-top: 15px; padding-right: 20px;">
                 <a href="book_detail/{{ book.id }}">
-                    {{ book.name }}
+                    <img src="{% static book.pic_path %}" width="175" height="250">
                 </a>
             </td>
-            <td>
-                {{ book.price }}
-            </td>
-            <td>
-                {{ book.user_name }}
-            </td>
-            <td>
-                <a href="book_delete/{{ book.id }}">Delete Book</a>
+            <td align="center">
+                <a href="book_detail/{{ book.id }}">
+                    {{ book.name }}
+                </a><br>
+               ${{ book.price }}<br>
+                <b><a href="book_delete/{{ book.id }}">Delete Book</a></b>
             </td>
         </tr>
     {% endfor %}
     <a href="/">Back</a>
 </table>
-{% else %}
-<h4 align="center">You have not posted any books.</h4>
-{% endif %}
 {% endblock content %}

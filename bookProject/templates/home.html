@@ -17,7 +17,7 @@
         <a class="nav-link" href="/postbook">Post Books</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/requestbook">Request Books</a>
+        <a class="nav-link" href="/displayrequest">Requested Books</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/book_search">Book Search</a>
@@ -37,14 +37,34 @@
 <p align="center" style="font-size: 20px">Book Exchange is a website that makes it easier for users
 to exchange books.</p>
 <p align="center" style="font-size: 20px">Here are some of the features you can use:</p>
-<center>
-  <ul>
-    <a href="/displaybooks"><ol>View All books available</ol></a>
-    <a href="/postbook"><ol>Post a book</ol></a>
-    <a href="/requestbook"><ol>Request a book</ol></a>
-    <a href="/mybooks"><ol>See your books</ol></a>
-    <a href="/book_search"><ol>Search for a book</ol></a>
-    <a href="/mymessages"><ol>Messages Inbox</ol></a>
-  </ul>
-</center>
+<div class="card-group">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Display Books</h5>
+      <p class="card-text">See all books being sold in one place</p>
+      <a href="/displaybooks" class="btn btn-primary btn-sm">See Books</a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Post A Book</h5>
+      <p class="card-text">Easy sell books you don't need</p>
+      <a href="/postbook" class="btn btn-primary btn-sm">Sell A Book</a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Request A Book</h5>
+      <p class="card-text">Can't find a book? Request here</p>
+      <a href="/requestbook" class="btn btn-primary btn-sm">See Requested Books</a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Search</h5>
+      <p class="card-text">Finding made easy with search</p>
+      <a href="/book_search" class="btn btn-primary btn-sm">Search</a>
+    </div>
+  </div>
+</div>
 {% endblock content %}

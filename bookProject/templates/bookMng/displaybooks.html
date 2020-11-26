@@ -49,19 +49,20 @@
 {% endif %}
 <center><a href="/requestbook">Can't find a book request it here</a></center>
 <br>
-<table align="center" border="2" width="500">
+<table align="center" width="50%" height="450">
     {% for book in books %}
-    <tr>
-        <td>
+    <tr style="border-bottom: 2px solid black">
+        <td style="padding-bottom: 15px; padding-top: 15px; padding-right: 20px;">
             <a href="book_detail/{{ book.id }}">
-                    {{ book.name }}
+                <img src="{% static book.pic_path %}" width="175" height="250">
             </a>
         </td>
         <td>
-            {{ book.price }}
-        </td>
-        <td>
-            {{ book.user_name }}
+            <b><a href="book_detail/{{ book.id }}">
+                {{ book.name }}
+            </a></b><br>
+            <b>${{ book.price }}</b><br>
+            Posted by {{ book.user_name }}<br>
         </td>
     </tr>
     {% endfor %}

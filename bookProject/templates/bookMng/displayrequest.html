@@ -19,15 +19,13 @@
         <a class="nav-link" href="/displaybooks">Display Books</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/postbook">Post Books</a>
-      </li>
-      <li class="nav-item">
         <a class="nav-link" href="/displayrequest">Requested Books</a>
       </li>
       <!-- ## Jason END ## -->
     </ul>
     {% if user.is_authenticated %}
       <a class="nav-link" href="/mybooks">My Books</a>
+      <a class="nav-link" href="/mymessages">Messages</a>
       <a href="{% url 'logout' %}">Logout</a>
     {% else %}
     <a class="nav-link" href="{% url 'login' %}">Login</a>
@@ -37,14 +35,13 @@
 </nav>
 <div class="container">
   <h2 align="center">Requested Book Page</h2>
-  <table align="center" border="2" width="500">
-  <h3 align="center">Can't find a book? <a href="/requestbook">request it here</a> </h3>
+  <a href="/requestbook"><h3 align="center">Can't find a book? Request it here</h3></a>
   <table class="table" style="padding: 10px">
     <thead>
       <tr>
         <th scope="col">Name</th>
         <th scope="col">Requested Book Name</th>
-        <th scope="col">Contact Email</th>
+        <th scope="col">Contact</th>
       </tr>
     </thead>
     <tbody>
@@ -57,7 +54,7 @@
               {{rb.bookName}}
           </td>
           <td>
-              <a href="mailto:{{rb.email}}">{{rb.email}}</a>
+              <a href="/sendmessage">Contact</a>
           </td>
 
         </tr>

@@ -5,15 +5,6 @@
    Book Detail
 {% endblock title %}
 
-
-{% block sidenav %}
-    {% for item in item_list %}
-        <li>
-            <a href="{{ item.link }}"> {{ item.item }} </a>
-        </li>
-    {% endfor %}
-{% endblock sidenav %}
-
 {% block content %}
 <!--if statement to give thanks if message was sent-->
 {% if message_name %}
@@ -35,15 +26,13 @@
         <a class="nav-link" href="/displaybooks">Display Books</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/postbook">Post Books</a>
-      </li>
-      <li class="nav-item">
         <a class="nav-link" href="/displayrequest">Requested Books</a>
       </li>
       <!-- ## Jason END ## -->
     </ul>
     {% if user.is_authenticated %}
       <a class="nav-link" href="/mybooks">My Books</a>
+      <a class="nav-link" href="/mymessages">Messages</a>
       <a href="{% url 'logout' %}">Logout</a>
     {% else %}
     <a class="nav-link" href="{% url 'login' %}">Login</a>
@@ -51,37 +40,71 @@
     {% endif %}
   </div>
 </nav>
-<h1 align="center"> {{ book.name }} Page </h1>
-<table align="center" width="35%" height="350">
-        <tr>
-            <td style="padding-top: 30px;">
-                <img src="{% static book.pic_path %}" width="275" height="350">
-            </td>
-            <td style="padding-top: 30px;">
-                <b>{{ book.name }}</b><br>
-                ${{ book.price }}<br>
-                Posted by {{ book.user_name }}
-            </td>
-        </tr>
-</table>
+<h1 align="center"> {{ book.name }} Review </h1>
+<!--<table align="center" width="35%" height="350">-->
+<!--        <tr>-->
+<!--            <td style="padding-top: 30px;">-->
+<!--                <img src="{% static book.pic_path %}" width="275" height="350">-->
+<!--            </td>-->
+<!--            <td style="padding-top: 30px;">-->
+<!--                <b>{{ book.name }}</b><br>-->
+<!--                ${{ book.price }}<br>-->
+<!--                Posted by {{ book.user_name }}-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--</table>-->
 
 <!--Review Form-->
-<div class="my-5">
-    {% if book.username != request.user %}
+<h2 class="py-3" align="center">Have the same book?
+    <br>Write your own review!
+    <br><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Write a review
+    </button>
+</h2>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Review Form</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {% if book.username != request.user %}
         <h2 class="py-3" align="center">Have the same book?<br>Write your own review!</h2>
         <form action="" enctype="multipart/form-data" method="post" novalidate>
             <table align="center">
                 {{ form.as_table }}
                 <tr>
                     <td colspan="2">
-                        <input type="submit" value="Submit">
+                        <input type="submit" value="Submit" class="btn btn-primary">
                     </td>
                 </tr>
             </table>
             {% csrf_token %}
         </form>
-    {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
 </div>
+<!--<div class="my-5">-->
+<!--    {% if book.username != request.user %}-->
+<!--        <h2 class="py-3" align="center">Have the same book?<br>Write your own review!</h2>-->
+<!--        <form action="" enctype="multipart/form-data" method="post" novalidate>-->
+<!--            <table align="center">-->
+<!--                {{ form.as_table }}-->
+<!--                <tr>-->
+<!--                    <td colspan="2">-->
+<!--                        <input type="submit" value="Submit">-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--            </table>-->
+<!--            {% csrf_token %}-->
+<!--        </form>-->
+<!--    {% endif %}-->
+<!--</div>-->
 <div class="my-5">
     <table align="center" width="50%">
         {% for review in book.review_set.all %}
@@ -99,36 +122,36 @@
 </div>
 
 <!--Send Message Form-->
-<div class="my-5">
-    <h2 align="center"> Have a question? <br> Send a message </h2>
+<!--<div class="my-5">-->
+<!--    <h2 align="center"> Have a question? <br> Send a message </h2>-->
 
-    <form action="{% url 'contact' %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="message-book" value="{{ book.name }}">
-        <input type="hidden" name="post-username" value="{{ book.user_name }}">
-        <table align="center">
-        <tr>
-            <td>
-                <input type="text" name="message-name" class="form-control mb-30" placeholder="Your Name">
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input type="email" name="message-email" class="form-control mb-30" placeholder="Your Email">
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <textarea name="message" class="form-control mb-30" placeholder="Your Message"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <button onclick="this.disabled=true;this.value='Sending...'; this.form.submit();"> Send Message </button>
-            </td>
-        </tr>
-        </table>
-    </form>
-</div>
+<!--    <form action="{% url 'contact' %}" method="post">-->
+<!--        {% csrf_token %}-->
+<!--        <input type="hidden" name="message-book" value="{{ book.name }}">-->
+<!--        <input type="hidden" name="post-username" value="{{ book.user_name }}">-->
+<!--        <table align="center">-->
+<!--        <tr>-->
+<!--            <td>-->
+<!--                <input type="text" name="message-name" class="form-control mb-30" placeholder="Your Name">-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td>-->
+<!--                <input type="email" name="message-email" class="form-control mb-30" placeholder="Your Email">-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td>-->
+<!--                <textarea name="message" class="form-control mb-30" placeholder="Your Message"></textarea>-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td>-->
+<!--                <button onclick="this.disabled=true;this.value='Sending...'; this.form.submit();"> Send Message </button>-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--        </table>-->
+<!--    </form>-->
+<!--</div>-->
 {% endif %}
 {% endblock content %}

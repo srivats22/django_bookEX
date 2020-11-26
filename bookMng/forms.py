@@ -30,12 +30,16 @@ class BookForm(ModelForm):
         ]
 
 
-class SearchForm(ModelForm):
+class SearchForm(forms.ModelForm):
     class Meta:
         model = Book
         fields = [
             'name',
         ]
+        widgets = {
+            'name': forms.TextInput(attrs={'placeholder': 'Search'})
+        }
+
 
 
 class ReviewForm(ModelForm):

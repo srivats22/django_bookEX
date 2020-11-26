@@ -60,7 +60,7 @@ def book_delete(request, book_id):
 def mybooks(request):
     books = Book.objects.filter(user_name=request.user) # like database select
     for b in books:
-        b.pic_path = b.picture.url[14:]
+        b.pic_path = b.picture.url[19:]
     return render(request,
                   'bookMng/mybooks.html',
                   {

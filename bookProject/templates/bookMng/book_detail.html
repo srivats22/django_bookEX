@@ -40,6 +40,9 @@
       <li class="nav-item">
         <a class="nav-link" href="/displayrequest">Requested Books</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/book_search">Book Search</a>
+      </li>
       <!-- ## Jason END ## -->
     </ul>
     {% if user.is_authenticated %}
@@ -52,83 +55,90 @@
   </div>
 </nav>
 <h1 align="center"> {{ book.name }} Page </h1>
-<table align="center" width="35%" height="350">
+<table align="center" border="2" width="500">
         <tr>
-            <td style="padding-top: 30px;">
-                <img src="{% static book.pic_path %}" width="275" height="350">
+            <th>
+                Name
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                User
+            </th>
+            <th>
+                Picture
+            </th>
+        </tr>
+        <tr>
+            <td>
+                {{ book.name }}
             </td>
-            <td style="padding-top: 30px;">
-                <b>{{ book.name }}</b><br>
-                ${{ book.price }}<br>
-                Posted by {{ book.user_name }}
+            <td>
+                {{ book.price }}
+            </td>
+            <td>
+                {{ book.user_name }}
+            </td>
+            <td>
+                <img src="{% static book.pic_path %}" width="40" height="40">
             </td>
         </tr>
 </table>
 
-<!--Review Form-->
-<div class="my-5">
-    {% if book.username != request.user %}
-        <h2 class="py-3" align="center">Have the same book?<br>Write your own review!</h2>
-        <form action="" enctype="multipart/form-data" method="post" novalidate>
-            <table align="center">
-                {{ form.as_table }}
-                <tr>
-                    <td colspan="2">
-                        <input type="submit" value="Submit">
-                    </td>
-                </tr>
-            </table>
-            {% csrf_token %}
-        </form>
-    {% endif %}
-</div>
-<div class="my-5">
-    <table align="center" width="50%">
-        {% for review in book.review_set.all %}
-            <tr style="border-bottom: 1px solid black;">
-                <td style="padding-bottom: 15px; padding-top: 15px; padding-right: 40px; padding-left: 10px;">
-                    {{ review.username }} <br>
-                    <b>{{ review.rating }}/5</b> <br>
-                    Reviewed on {{ review.publishdate }} <br>
-                    <b>{{ review.title }}</b> <br>
-                    {{ review.description }} <br>
+{% if book.username != request.user %}
+    <h2 align="center">Have the same book?<br>Write your own review!</h2>
+    <form action="" enctype="multipart/form-data" method="post" novalidate>
+        <table align="center">
+            {{ form.as_table }}
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="Submit">
                 </td>
             </tr>
-        {% endfor %}
-    </table>
-</div>
+        </table>
+        {% csrf_token %}
+    </form>
+{% endif %}
+{% for review in book.review_set.all %}
+    <p align="center">
+        <b>{{ review.rating }}/5</b> <br>
+        {{ review.username }} <br>
+        Reviewed on {{ review.publishdate }} <br>
+        <b>{{ review.title }}</b> <br>
+        {{ review.description }} <br>
+    </p>
+{% endfor %}
 
 <!--Send Message Form-->
-<div class="my-5">
-    <h2 align="center"> Have a question? <br> Send a message </h2>
+<h2 align="center"> Have a question? <br> Send a message </h2>
 
-    <form action="{% url 'contact' %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="message-book" value="{{ book.name }}">
-        <input type="hidden" name="post-username" value="{{ book.user_name }}">
-        <table align="center">
-        <tr>
-            <td>
-                <input type="text" name="message-name" class="form-control mb-30" placeholder="Your Name">
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input type="email" name="message-email" class="form-control mb-30" placeholder="Your Email">
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <textarea name="message" class="form-control mb-30" placeholder="Your Message"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <button onclick="this.disabled=true;this.value='Sending...'; this.form.submit();"> Send Message </button>
-            </td>
-        </tr>
-        </table>
-    </form>
-</div>
+<form action="{% url 'contact' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="message-book" value="{{ book.name }}">
+    <input type="hidden" name="post-username" value="{{ book.user_name }}">
+    <table align="center">
+    <tr>
+        <td>
+            <input type="text" name="message-name" class="form-control mb-30" placeholder="Your Name">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="email" name="message-email" class="form-control mb-30" placeholder="Your Email">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <textarea name="message" class="form-control mb-30" placeholder="Your Message"></textarea>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <button onclick="this.disabled=true;this.value='Sending...'; this.form.submit();"> Send Message </button>
+        </td>
+    </tr>
+    </table>
+</form>
 {% endif %}
 {% endblock content %}

@@ -24,6 +24,9 @@
       <li class="nav-item">
         <a class="nav-link" href="/displayrequest">Requested Books</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/book_search">Book Search</a>
+      </li>
       <!-- ## Jason END ## -->
     </ul>
     {% if user.is_authenticated %}
@@ -35,6 +38,7 @@
     {% endif %}
   </div>
 </nav>
+<<<<<<< HEAD
 <div class="container">
   <h2 align="center">Requested Book Page</h2>
   <table align="center" border="2" width="500">
@@ -64,6 +68,35 @@
     </tbody>
   </table>
 </div>
+=======
+<h2 align="center">Requested Book Page</h2>
+<table align="center" border="2" width="500">
+<h3 align="center">Can't find a book? <a href="#">request it here</a> </h3>
+<table class="table" style="padding: 10px">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Requested Book Name</th>
+      <th scope="col">Contact Email</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      {% for rb in requestedbooks %}
+        <td>
+            {{rb.name}}
+        </td>
+        <td>
+            {{rb.bookName}}
+        </td>
+        <td>
+            <a href="mailto:{{rb.email}}">{{rb.email}}</a>
+        </td>
+    {% endfor %}
+    </tr>
+  </tbody>
+</table>
+>>>>>>> parent of 8c9826a... UI changes
 <!--<table align="center" border="2" width="500">-->
 <!--    {% for rb in requestedbooks %}-->
 <!--    <tr>-->

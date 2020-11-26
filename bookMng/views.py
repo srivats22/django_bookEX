@@ -34,32 +34,15 @@ def home(request):
 
 @login_required(login_url=reverse_lazy('login'))
 def displaybooks(request):
-    form = SearchForm()
-    books = book_search(request)
-    try:
-        for b in books:
-            b.pic_path = b.picture.url[19:]
-    except Exception:
-        return HttpResponseRedirect('/displaybooks')
+    books = Book.objects.all()
+    for b in books:
+        b.pic_path = b.picture.url[19:]
     return render(request,
                   'bookMng/displaybooks.html',
                   {
                       'item_list': MainMenu.objects.all(),
-                      'books': books,
-                      'form': form
+                      'books': books
                   })
-
-
-@login_required(login_url=reverse_lazy('login'))
-def book_search(request):
-    if request.method == 'POST':
-        form = SearchForm(request.POST, request.FILES)
-        if form.is_valid():
-            data = form.cleaned_data['name']
-            books = Book.objects.filter(name__icontains=data)
-            return books
-    else:
-        return Book.objects.all()
 
 
 @login_required(login_url=reverse_lazy('login'))
@@ -75,14 +58,40 @@ def book_delete(request, book_id):
 
 @login_required(login_url=reverse_lazy('login'))
 def mybooks(request):
-    books = Book.objects.filter(user_name=request.user)
+    books = Book.objects.filter(user_name=request.user) # like database select
     for b in books:
-        b.pic_path = b.picture.url[19:]
+        b.pic_path = b.picture.url[14:]
     return render(request,
                   'bookMng/mybooks.html',
                   {
                       'item_list': MainMenu.objects.all(),
                       'books': books
+                  })
+
+
+@login_required(login_url=reverse_lazy('login'))
+def book_search(request):
+    submitted = False
+    if request.method == 'POST':
+        form = SearchForm(request.POST, request.FILES)
+        if form.is_valid():
+            data = form.cleaned_data['name']
+            books = Book.objects.filter(name__icontains=data)
+            return render(request,
+                          'bookMng/search_results.html',
+                          {
+                              'books': books
+                          })
+    else:
+        form = SearchForm()
+        if 'submitted' in request.GET:
+            submitted = True
+    return render(request,
+                  'bookMng/book_search.html',
+                  {
+                      'form': form,
+                      'item_list': MainMenu.objects.all(),
+                      'submitted': submitted
                   })
 
 
@@ -177,13 +186,12 @@ def book_detail(request, book_id):
         form = ReviewForm(request.POST, request.FILES)
         if form.is_valid():
             review = form.save(commit=False)
-            if 1 <= review.rating <= 5:
-                try:
-                    review.book = book
-                    review.username = request.user
-                except Exception:
-                    pass
-                review.save()
+            try:
+                review.book = book
+                review.username = request.user
+            except Exception:
+                pass
+            review.save()
             return HttpResponseRedirect(f'/book_detail/{book_id}')
     else:
         form = ReviewForm()

@@ -25,6 +25,9 @@
       <li class="nav-item">
         <a class="nav-link" href="/displayrequest">Requested Books</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/book_search">Book Search</a>
+      </li>
       <!-- ## Jason END ## -->
     </ul>
     {% if user.is_authenticated %}
@@ -37,22 +40,33 @@
   </div>
 </nav>
 <h1 align="center"> My Books Page </h1>
-<table align="center" width="50%">
+<table align="center" border="2" width="500">
     {% for book in books %}
-        <tr style="border-bottom: 2px solid black">
-            <td style="padding-bottom: 15px; padding-top: 15px; padding-right: 20px;">
+        <tr>
+            <td>
                 <a href="book_detail/{{ book.id }}">
-                    <img src="{% static book.pic_path %}" width="175" height="250">
+                    {{ book.name }}
                 </a>
             </td>
             <td>
+<<<<<<< HEAD
                 <a href="book_detail/{{ book.id }}">
                     {{ book.name }}
                 </a><br>
                 <b>${{ book.price }}</b><br>
                 <b><a href="book_delete/{{ book.id }}">Delete Book</a></b>
+=======
+                {{ book.price }}
+            </td>
+            <td>
+                {{ book.user_name }}
+            </td>
+            <td>
+                <a href="book_delete/{{ book.id }}">Delete Book</a>
+>>>>>>> parent of 8c9826a... UI changes
             </td>
         </tr>
     {% endfor %}
+    <a href="/">Back</a>
 </table>
 {% endblock content %}

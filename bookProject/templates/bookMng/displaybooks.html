@@ -24,6 +24,9 @@
       <li class="nav-item">
         <a class="nav-link" href="/displayrequest">Requested Books</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/book_search">Book Search</a>
+      </li>
       <!-- ## Jason END ## -->
     </ul>
     {% if user.is_authenticated %}
@@ -36,33 +39,22 @@
   </div>
 </nav>
 <h2 align="center">Display Book Page</h2>
-{% if submitted %}
-<p>Success</p>
-{% else %}
-<center>
-<form action="" enctype="multipart/form-data" method="post" novalidate>
-   <table>
-      {{ form.as_table }}
-   </table>
-   {% csrf_token %}
-</form>
-{% endif %}
+<center><a href="/book_search" style="font-size: 25px">You can search for a book here</a></center>
 <center><a href="/requestbook">Can't find a book request it here</a></center>
 <br>
-<table align="center" width="50%" height="450">
+<table align="center" border="2" width="500">
     {% for book in books %}
-    <tr style="border-bottom: 2px solid black">
-        <td style="padding-bottom: 15px; padding-top: 15px; padding-right: 20px;">
+    <tr>
+        <td>
             <a href="book_detail/{{ book.id }}">
-                <img src="{% static book.pic_path %}" width="175" height="250">
+                    {{ book.name }}
             </a>
         </td>
         <td>
-            <b><a href="book_detail/{{ book.id }}">
-                {{ book.name }}
-            </a></b><br>
-            <b>${{ book.price }}</b><br>
-            Posted by {{ book.user_name }}<br>
+            {{ book.price }}
+        </td>
+        <td>
+            {{ book.user_name }}
         </td>
     </tr>
     {% endfor %}

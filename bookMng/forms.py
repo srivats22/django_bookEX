@@ -75,3 +75,20 @@ class MessageForm(ModelForm):
             'subject',
             'message'
         ]
+        widgets = {
+            'receiver': forms.Select(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'subject': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'message': forms.Textarea(
+                attrs={
+                    'class': 'form-control'
+                }
+            )
+        }

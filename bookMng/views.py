@@ -1,3 +1,5 @@
+from django.db.models import Q
+
 from .models import MainMenu
 from .models import Book, RequestBook
 from .forms import RequestBookForm
@@ -52,12 +54,12 @@ def displaybooks(request):
 
 @login_required(login_url=reverse_lazy('login'))
 def book_search(request):
-    if request.method == 'POST':
-        form = SearchForm(request.POST, request.FILES)
-        if form.is_valid():
-            data = form.cleaned_data['name']
-            books = Book.objects.filter(name__icontains=data)
-            return books
+    query = request.POST.get('searchbar', '')
+    if query:
+        queryset = Q(name__icontains=query)
+        results = Book.objects.filter(queryset).distinct()
+        print(f'book_search: Returning results for {query}')
+        return results
     else:
        return Book.objects.all()
 

@@ -1,0 +1,14 @@
+.text_style{
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* mouse over link */
+a:hover {
+  text-decoration: underline;
+  text-decoration-color: #FBCE4C;
+}
+a:color{
+    color: #000000
+}
+
+

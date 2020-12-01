@@ -10,39 +10,33 @@
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <a class="navbar-brand" href="/">Book Exchange</a>
+  <a class="navbar-brand text_style" href="/">Book Exchange</a>
 
   <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
       <!-- ## Jason START ## -->
       <li class="nav-item">
-        <a class="nav-link" href="/displaybooks">Display Books</a>
+        <a class="nav-link text_style" href="/displaybooks">Display Books</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/postbook">Post Books</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/requestbook">Request Books</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/displayrequest">Requested Books</a>
+        <a class="nav-link active text_style" href="/displayrequest">Requested Books</a>
       </li>
       <!-- ## Jason END ## -->
     </ul>
     {% if user.is_authenticated %}
-      <a class="nav-link" href="/mybooks">My Books</a>
-      <a class="nav-link" href="/mymessages">My Messages</a>
+      <a class="nav-link text_style" href="/mybooks">My Books</a>
+      <a class="nav-link text_style" href="/mymessages">My Messages</a>
       <a href="{% url 'logout' %}">Logout</a>
     {% else %}
-    <a class="nav-link" href="{% url 'login' %}">Login</a>
-    <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
+    <a class="nav-link text_style" href="{% url 'login' %}">Login</a>
+    <a class="nav-link text_style" href="{% url 'signup' %}">Sign Up</a>
     {% endif %}
   </div>
 </nav>
 <div class="container">
-  <h2 align="center">Requested Book Page</h2>
-  <a href="/requestbook"><h3 align="center">Can't find a book? Request it here</h3></a>
-  <table class="table" style="padding: 10px">
+  <h2 align="center" class="text_style">Here are the books that are currently being requested</h2>
+  <a href="/requestbook"><h3 align="center" class="text_style">Can't find a book? Request it here</h3></a>
+  <table class="table text_style" style="padding: 10px">
     <thead>
       <tr>
         <th scope="col">Name</th>

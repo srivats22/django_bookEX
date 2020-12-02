@@ -33,7 +33,11 @@
     {% endif %}
   </div>
 </nav>
-
+{% if message_sender %}
+<h2 align="center">Thanks {{ message_sender }}!</h2>
+<h5 align="center">{{ message_receiver }} has received your message and will respond shortly...</h5>
+<ol><input type="button" class="btn btn-outline-primary" value="Back" onclick="history.back()"></ol>
+{% else %}
 <h3 align="center" class="text_style">Here are the books being sold currently</h3>
 <h4 align="center" class="text_style">Want to sell a book?<a href="/postbook">Click here</a></h4>
 <center>
@@ -60,7 +64,48 @@
         <div class="col-md-8">
           <div class="card-body">
             <a href="book_detail/{{ book.id }}"><h5 class="card-title text_style"> {{ book.name }}</h5></a>
-            <a href="/sendmessage"><p class="card-text text_style">Contact Seller {{ book.user_name }}</p></a>
+            <!--Contact Form Items-->
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#contact{{ book.user_name }}">Contact {{ book.user_name }}</button>
+              <div class="modal fade" id="contact{{ book.user_name }}" tabindex="-1" aria-labelledby="contact{{ book.user_name }}Label" aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h5 class="modal-title" id="contact{{ book.user_name }}Label">Message to {{ book.user_name }}</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                              </button>
+                              </div>
+                          <div class="modal-body">
+                              <form id="form{{ book.id }}" action="{% url 'contact' %}" method="post">
+                                  {% csrf_token %}
+                                    <input type="hidden" name="post-username" value="{{ book.user_name }}">
+                                    <table align="center">
+                                        <tr>
+                                            <td>
+                                            <div class="form-group">
+                                                <textarea name="subject" class="form-control" placeholder="Subject" required></textarea>
+                                            </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="form-group">
+                                                    <textarea name="message" class="form-control" rows="5" cols="50" placeholder="Message" required></textarea>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input class="btn btn-primary" type="submit" value="Send">
+                                            </td>
+                                        </tr>
+                                    </table>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <!--End Contact Form Items-->
             <p class="card-text"><small class="text-muted text_style">${{ book.price }}</small></p>
           </div>
         </div>
@@ -68,4 +113,5 @@
     </div>
     {% endfor %}
 </div>
+{% endif %}
 {% endblock content %}

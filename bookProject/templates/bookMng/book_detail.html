@@ -33,13 +33,6 @@
     {% endif %}
   </div>
 </nav>
-<!--if statement to give thanks if message was sent-->
-{% if message_name %}
-<h2 align="center" class="text_style">Thanks {{ message_name }}!</h2>
-<h5 align="center" class="text_style">We have received your message and will respond shortly...</h5>
-<ol><input type="button" class="btn btn-outline-primary" value="Back" onclick="history.back()"></ol>
-<!--else, show book detail and message form-->
-{% else %}
 <table align="center" width="35%" height="350" class="text_style">
         <tr>
             <td style="padding-top: 30px;">
@@ -142,29 +135,4 @@
         {% endfor %}
     </table>
 </div>
-
-<!--Send Message Form-->
-<div class="my-5">
-<h2 align="center"> Have a question? <br> Send a message </h2>
-<form action="{% url 'contact' %}" method="post">
-    {% csrf_token %}
-    <input type="hidden" name="message-book" value="{{ book.name }}">
-    <input type="hidden" name="post-username" value="{{ book.user_name }}">
-    <table align="center">
-    <tr>
-        <td>
-            <div class="form-group">
-                <textarea name="message" class="form-control" rows="5" cols="50" placeholder="Message" required></textarea>
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <input class="btn btn-primary" type="submit" value="Send">
-        </td>
-    </tr>
-    </table>
-</form>
-</div>
-{% endif %}
 {% endblock content %}

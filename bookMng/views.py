@@ -192,7 +192,7 @@ def contact(request):
     if request.method == "POST":
         newmessage = Message()
         post_username = request.POST['post-username']
-        subject = request.POST['message-book']
+        subject = request.POST['subject']
         message = request.POST['message']
 
         newmessage.sender = request.user
@@ -202,10 +202,10 @@ def contact(request):
 
         newmessage.save()
 
-        return render(request, 'bookMng/book_detail.html', {'message_name': newmessage.sender})
+        return render(request, 'bookMng/displaybooks.html',
+                      {'message_sender': newmessage.sender, 'message_receiver': newmessage.receiver})
     else:
-        return render(request, 'bookMng/book_detail.html', {})
-
+        return render(request, 'bookMng/displaybooks.html', {})
 
 @login_required(login_url=reverse_lazy('login'))
 def mymessages(request):

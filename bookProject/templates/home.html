@@ -10,21 +10,21 @@
   <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
       <!-- ## Jason START ## -->
-      <li class="nav-item">
-        <a class="nav-link" href="/displaybooks">Display Books</a>
+      <li class="nav-item nav-link">
+        <a href="/displaybooks">Display Books</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/displayrequest">Requested Books</a>
+      <li class="nav-item nav-link">
+        <a href="/displayrequest">Requested Books</a>
       </li>
       <!-- ## Jason END ## -->
     </ul>
     {% if user.is_authenticated %}
-      <a class="nav-link" href="/mybooks">My Books</a>
-      <a class="nav-link" href="/mymessages">My Messages</a>
-      <a href="{% url 'logout' %}">Logout</a>
+    <a class="nav-item" href="/mybooks">My Books</a>
+    <a class="nav-item" style="padding-left: 20px" href="/mymessages">My Messages</a>
+    <a href="{% url 'logout' %}" style="padding-left: 20px">Logout</a>
     {% else %}
-    <a class="nav-link" href="{% url 'login' %}">Login</a>
-    <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
+    <a class="nav-item" href="{% url 'login' %}">Login</a>
+    <a class="nav-item" href="{% url 'signup' %}" style="padding-left: 20px">Sign Up</a>
     {% endif %}
   </div>
 </nav>
@@ -38,21 +38,21 @@ to exchange books.</p>
       <div class="card-body">
         <h5 class="card-title">Display Books</h5>
         <p class="card-text">See all books being sold in one place</p>
-        <a href="/displaybooks" class="btn btn-primary btn-sm">See Books</a>
+        <a href="/displaybooks" class="btn btn-sm" style="background-color: #FFCC00">See Books</a>
       </div>
     </div>
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">Post A Book</h5>
         <p class="card-text">Easily sell a book you don't need</p>
-        <a href="/postbook" class="btn btn-primary btn-sm">Sell A Book</a>
+        <a href="/postbook" class="btn btn-sm" style="background-color: #FFCC00">Sell A Book</a>
       </div>
     </div>
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">Request A Book</h5>
         <p class="card-text">Can't find a book? Request here</p>
-        <a href="/requestbook" class="btn btn-primary btn-sm">See Requested Books</a>
+        <a href="/requestbook" class="btn btn-sm" style="background-color: #FFCC00">See Requested Books</a>
       </div>
     </div>
   </div>

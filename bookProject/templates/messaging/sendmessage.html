@@ -6,39 +6,6 @@
 {% endblock title %}
 
 {% block content %}
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <a class="navbar-brand" href="/">Book Exchange</a>
-
-  <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-      <!-- ## Jason START ## -->
-      <li class="nav-item">
-        <a class="nav-link" href="/displaybooks">Display Books</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/postbook">Post Books</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/requestbook">Request Books</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/displayrequest">Requested Books</a>
-      </li>
-      <!-- ## Jason END ## -->
-    </ul>
-    {% if user.is_authenticated %}
-      <a class="nav-link" href="/mybooks">My Books</a>
-      <a class="nav-link" href="/mymessages">My Messages</a>
-      <a href="{% url 'logout' %}">Logout</a>
-    {% else %}
-    <a class="nav-link" href="{% url 'login' %}">Login</a>
-    <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
-    {% endif %}
-  </div>
-</nav>
 <h1 align="center"> New Message </h1>
 {% if submitted %}
 <h5 align="center">Sent successfully!</h5>

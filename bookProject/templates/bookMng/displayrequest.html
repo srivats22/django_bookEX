@@ -35,7 +35,37 @@
 </nav>
 <div class="container">
   <h2 align="center" class="text_style">Here are the books that are currently being requested</h2>
-  <a href="/requestbook"><h3 align="center" class="text_style">Can't find a book? Request it here</h3></a>
+  <a data-toggle="modal" data-target="#requestbook" href="#requestbook"><h3 align="center" class="text_style">Can't find a book? Request it here</h3></a>
+    <div class="modal fade" id="requestbook" tabindex="-1" aria-labelledby="requestbookLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="requestbookLabel">Request Book</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                {% if book.username != request.user %}
+                <h2 class="py-3" align="center">Want to request a book?<br>Fill out the form!</h2>
+                <form action="/requestbook" enctype="multipart/form-data" method="post" novalidate>
+                    <table align="center">
+                    <tr><th><label for="id_name">Name:</label></th><td><input type="text" name="name" maxlength="200" required id="id_name"></td></tr>
+                    <tr><th><label for="id_bookName">BookName:</label></th><td><input type="text" name="bookName" maxlength="200" required id="id_bookName"></td></tr>
+                    <tr><th><label for="id_email">Email:</label></th><td><input type="text" name="email" maxlength="200" required id="id_email"></td></tr>
+                    <tr>
+                        <td colspan="2">
+                            <input type="submit" value="Submit" class="btn btn-primary">
+                        </td>
+                    </tr>
+                    </table>
+                    {% csrf_token %}
+                </form>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
   <table class="table text_style" style="padding: 10px">
     <thead>
       <tr>

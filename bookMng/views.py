@@ -100,7 +100,7 @@ def postbook(request):
             except Exception:
                 pass
             book.save()
-            return HttpResponseRedirect('/postbook?submitted=True')
+            return HttpResponseRedirect('/displaybooks')
     else:
         form = BookForm()
         if 'submitted' in request.GET:
@@ -131,7 +131,7 @@ def requestbook(request):
         if form.is_valid():
             request_book = form.save(commit=False)
             request_book.save()
-            return HttpResponseRedirect('/requestbook?submitted=True')
+            return HttpResponseRedirect('/displayrequest')
     else:
         form = RequestBookForm()
         if 'submitted' in request.GET:

@@ -10,7 +10,7 @@
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <a class="navbar-brand" href="/">Book Exchange</a>
+  <a class="navbar-brand" href="/">Literary Lunatics</a>
 
   <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -55,17 +55,19 @@
                 {% if book.username != request.user %}
                 <h2 class="py-3" align="center">Want to sell a book?<br>Fill out the form!</h2>
                 <form action="/postbook" enctype="multipart/form-data" method="post" novalidate>
-                    <table align="center">
-                    <tr><th><label for="id_name">Name:</label></th><td><input type="text" name="name" maxlength="200" required id="id_name"></td></tr>
-                    <tr><th><label for="id_web">Web:</label></th><td><input type="url" name="web" maxlength="300" required id="id_web"></td></tr>
-                    <tr><th><label for="id_price">Price:</label></th><td><input type="number" name="price" step="0.01" required id="id_price"></td></tr>
-                    <tr><th><label for="id_picture">Picture:</label></th><td><input type="file" name="picture" required id="id_picture"></td></tr>
-                    <tr>
-                        <td colspan="2">
-                            <input type="submit" value="Submit" class="btn btn-primary">
-                        </td>
-                    </tr>
-                    </table>
+                    <label for="id_name">Name:</label>
+                    <input type="text" name="name" maxlength="200" required id="id_name">
+                    <br>
+                    <label for="id_web">Web:</label>
+                    <input type="url" name="web" maxlength="300" required id="id_web">
+                    <br>
+                    <label for="id_price">Price:</label>
+                    <input type="number" name="price" step="0.01" required id="id_price">
+                    <br>
+                    <span><label for="id_picture">Picture:</label>
+                        <input type="file" name="picture" required id="id_picture"></span>
+                    <br>
+                    <input type="submit" value="Submit" class="btn" style="background-color: #ffcc00">
                     {% csrf_token %}
                 </form>
                 {% endif %}
@@ -131,7 +133,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <input class="btn btn-primary" type="submit" value="Send">
+                                                <input class="btn btn-warning" type="submit" value="Send">
                                             </td>
                                         </tr>
                                     </table>

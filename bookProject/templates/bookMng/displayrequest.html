@@ -10,7 +10,7 @@
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <a class="navbar-brand" href="/">Book Exchange</a>
+  <a class="navbar-brand" href="/">Literary Lunatics</a>
 
   <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -55,7 +55,7 @@
                     <tr><th><label for="id_email">Email:</label></th><td><input type="text" name="email" maxlength="200" required id="id_email"></td></tr>
                     <tr>
                         <td colspan="2">
-                            <input type="submit" value="Submit" class="btn btn-primary">
+                            <input type="submit" value="Submit" class="btn" style="background-color: #ffcc00">
                         </td>
                     </tr>
                     </table>
@@ -84,7 +84,46 @@
               {{rb.bookName}}
           </td>
           <td>
-              <a href="/sendmessage">Contact</a>
+              <button type="button" style="background-color: #FFCC00" class="btn btn-sm" data-toggle="modal" data-target="#contact{{ rb.name }}">Contact</button>
+              <div class="modal fade" id="contact{{ rb.name }}" tabindex="-1" aria-labelledby="contact{{ rb.name }}Label" aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h5 class="modal-title" id="contact{{ rb.name }}Label">Message to {{ rb.name }}</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                              </button>
+                              </div>
+                          <div class="modal-body">
+                              <form id="form{{ rb.id }}" action="{% url 'contact' %}" method="post">
+                                  {% csrf_token %}
+                                    <input type="hidden" name="post-username" value="{{ rb.name }}">
+                                    <table align="center">
+                                        <tr>
+                                            <td>
+                                            <div class="form-group">
+                                                <textarea name="subject" class="form-control" placeholder="Subject" required></textarea>
+                                            </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="form-group">
+                                                    <textarea name="message" class="form-control" rows="5" cols="50" placeholder="Message" required></textarea>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input class="btn btn-warning" type="submit" value="Send">
+                                            </td>
+                                        </tr>
+                                    </table>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+              </div>
           </td>
 
         </tr>

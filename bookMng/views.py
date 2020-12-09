@@ -37,6 +37,7 @@ def home(request):
 @login_required(login_url=reverse_lazy('login'))
 def displaybooks(request):
     form = SearchForm()
+    sellBook = BookForm()
     books = book_search(request)
     try:
         for b in books:
@@ -48,7 +49,8 @@ def displaybooks(request):
                   {
                       'item_list': MainMenu.objects.all(),
                       'books': books,
-                      'form': form
+                      'form': form,
+                      'sellBook': sellBook,
                   })
 
 

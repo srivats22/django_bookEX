@@ -33,6 +33,7 @@
     {% endif %}
   </div>
 </nav>
+<div class="container">
 {% if message_sender %}
 <h2 align="center">Thanks {{ message_sender }}!</h2>
 <h5 align="center">{{ message_receiver }} has received your message and will respond shortly...</h5>
@@ -40,8 +41,8 @@
 {% else %}
 <h3 align="center" class="text_style">Here are the books being sold currently</h3>
 <h4 align="center" class="text_style">Want to sell a book?
-    <!-- Turn into popout form -->
-    <a data-toggle="modal" data-target="#postbook" href="#postbook">Click here</a>
+    <!-- Post Book form -->
+    <a data-toggle="modal" data-target="#postbook" href="#postbook">Click here</a></h4>
     <div class="modal fade" id="postbook" tabindex="-1" aria-labelledby="postbookLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -54,28 +55,26 @@
                 <div class="modal-body">
                 {% if book.username != request.user %}
                 <h2 class="py-3" align="center">Want to sell a book?<br>Fill out the form!</h2>
-                    <form action="" enctype="multipart/form-data" method="post" novalidate>
-                        {% for field in sellBook %}
-                        <p>
-                            {{ field.label_tag }}
-                            {{ field }}
-                            {% if field.help_text %}
-                            <small style="color: grey">{{ field.help_text | safe }}</small>
-                            {% endif %}
-                            {% for error in field.errors %}
-                            <p style="color: red">{{ error | safe }}</p>
-                            {% endfor %}
-                        </p>
-                        {% endfor %}
-                        <button class="btn btn-warning">Submit</button>
+                    <form action="/postbook" enctype="multipart/form-data" method="post" novalidate>
+                        <table style="margin-left: 5.25em;">
+                        <tr><th><label for="id_name">Name:</label></th><td><input type="text" name="name" maxlength="200" required id="id_name"></td></tr>
+                        <tr><th><label for="id_web">Web:</label></th><td><input type="url" name="web" maxlength="200" required id="id_web"></td></tr>
+                        <tr><th><label for="id_price">Price:</label></th><td><input type="number" name="price" required id="id_price"></td></tr>
+                        <tr><th><label for="id_picture">Picture:</label></th><td><input type="file" name="picture" required id="id_picture"></td></tr>
+                        <tr>
+                            <td colspan="2">
+                                <input type="submit" value="Submit" class="btn" style="background-color: #ffcc00">
+                            </td>
+                        </tr>
+                        </table>
+                        {% csrf_token %}
                     </form>
                 {% endif %}
                 </div>
             </div>
         </div>
     </div>
-    <!-- Turn into popout form end -->
-</h4>
+    <!-- Post Book end -->
 <center>
     {% if submitted %}
     <p>Success</p>
@@ -90,7 +89,7 @@
     {% endif %}
 </center>
 <br>
-<div class="row row-cols-1 row-cols-md-3">
+<div class="row row-cols-1 row-cols-md-3" style="margin-left: 2em">
     {% for book in books %}
     <div class="card mb-5 offset-md-1" style="max-width: 440px;">
       <div class="row no-gutters">
@@ -148,6 +147,7 @@
       </div>
     </div>
     {% endfor %}
+</div>
 </div>
 {% endif %}
 {% endblock content %}

@@ -115,7 +115,7 @@ def postbook(request):
                       'submitted': submitted
                   })
 
-
+@login_required(login_url=reverse_lazy('login'))
 def requestedbooks(request):
     requestbooks = RequestBook.objects.all()
     for rb in requestbooks:
@@ -123,7 +123,7 @@ def requestedbooks(request):
             'requestedbooks': requestbooks
         })
 
-
+@login_required(login_url=reverse_lazy('login'))
 def requestbook(request):
     submitted = False
     if request.method == 'POST':
@@ -198,7 +198,10 @@ def contact(request):
         message = request.POST['message']
 
         newmessage.sender = request.user
-        newmessage.receiver = User.objects.get(username=post_username)
+        try:
+            newmessage.receiver = User.objects.get(username=post_username)
+        except: # If the user does not exist in the database, go back to the displayrequested books page (or whatever)
+            return requestedbooks(request)
         newmessage.subject = subject
         newmessage.message = message
 

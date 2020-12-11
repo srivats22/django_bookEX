@@ -55,7 +55,7 @@
                 <div class="modal-body">
                 {% if book.username != request.user %}
                 <h2 class="py-3" align="center">Want to sell a book?<br>Fill out the form!</h2>
-                    <form action="/postbook" enctype="multipart/form-data" method="post" novalidate>
+                <form action="{% url 'postbook' %}" enctype="multipart/form-data" method="post" novalidate>
                         <table style="margin-left: 5.25em;">
                         <tr><th><label for="id_name">Name:</label></th><td><input type="text" name="name" maxlength="200" required id="id_name"></td></tr>
                         <tr><th><label for="id_web">Web:</label></th><td><input type="url" name="web" maxlength="200" required id="id_web"></td></tr>

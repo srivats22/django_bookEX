@@ -103,17 +103,12 @@ def postbook(request):
                 pass
             book.save()
             return HttpResponseRedirect('/displaybooks')
+        else: # If the form fails, go back to display book
+            return displaybooks(request)
     else:
         form = BookForm()
         if 'submitted' in request.GET:
             submitted = True
-    return render(request,
-                  'bookMng/postbook.html',
-                  {
-                      'form': form,
-                      'item_list': MainMenu.objects.all(),
-                      'submitted': submitted
-                  })
 
 @login_required(login_url=reverse_lazy('login'))
 def requestedbooks(request):
@@ -134,20 +129,12 @@ def requestbook(request):
             request_book = form.save(commit=False)
             request_book.save()
             return HttpResponseRedirect('/displayrequest')
-    else:
+        else:
+            return requestedbooks(request)
+    else: # If the form fails, go back to requested books
         form = RequestBookForm()
         if 'submitted' in request.GET:
             submitted = True
-
-    return render(
-        request,
-        'bookMng/requestbook.html',
-        {
-            'form': form,
-            'submitted': submitted
-        }
-    )
-
 
 def signup(request):
     if request.method == 'POST':
